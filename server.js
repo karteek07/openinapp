@@ -1,14 +1,6 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 require('./utils/mongoosedb');
-const secret = require('./utils/config').secret;
-const auth = require('./middleware/auth');
 const runPriorityCron = require('./cronJobs/priorityCronJob');
-
-const User = require('./models/User');
-const Task = require('./models/Task');
-const SubTask = require('./models/SubTask');
-
 const authController = require('./controllers/authController');
 const taskController = require('./controllers/taskController');
 const subTaskController = require('./controllers/subtaskController');

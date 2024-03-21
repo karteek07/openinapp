@@ -26,7 +26,7 @@ router.get(
                 message: "Invalid date, only 'ddmmyyyy' format is accepted",
             });
         }
-        if (dateCompare(dueDate)==false) {
+        if (dateCompare(dueDate) == false) {
             return res.json({
                 message: 'Invalid date, date less than today is not accepted',
             });
@@ -182,7 +182,7 @@ router.get('/user/:user_id/task/update/:task_id/', async (req, res) => {
             { $set: { status: status.toUpperCase() } }
         );
 
-        makeCall('9767997527')
+        makeCall('9767997527');
     }
 
     const task = await Task.findOne({ task_id: task_id });

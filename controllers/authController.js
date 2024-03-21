@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 const Task = require('../models/Task');
 const SubTask = require('../models/SubTask');
+const auth = require('../middleware/auth');
+const { tokenBlackList, secret } = require('../utils/config');
 
 router.get('/user/create/:phoneno/:priority', async (req, res) => {
     let { phoneno, priority } = req.params;
@@ -30,11 +33,9 @@ router.get('/user/create/:phoneno/:priority', async (req, res) => {
     return res.json(user);
 });
 
-/*
-router.get('/', auth, async (req, res) => {
-    res.send('Hello Mundo');
+router.get('/', async (req, res) => {
+    res.send('Welcome');
 });
-
 
 router.get('/login/:user_id', async (req, res) => {
     const { user_id } = req.params;
@@ -42,16 +43,22 @@ router.get('/login/:user_id', async (req, res) => {
     if (!existingUser) {
         return res.json({ error: 'No user found, please register first' });
     }
+
     const token = jwt.sign({ userId: user_id }, secret, { expiresIn: '1h' });
-
-    res.cookie('token', token, { httpOnly: true });
-    res.send('Logged In');
+    // res.json({ message: 'LoggedIn', token: token });
+    res.json({ token });
 });
 
-router.get('/logout', async (req, res) => {
-    res.send('Logged Out');
-});
+router.get('/logout', (req, res) => {
+    const token = req.headers.authorization;
+    // const token = req.query.token;
 
-*/
+    if (!token) {
+        return res.status(400).json({ error: 'Token not provided' });
+    }
+
+    tokenBlacklist.add(token);
+    res.json({ message: 'Logged out successfully' });
+});
 
 module.exports = router;

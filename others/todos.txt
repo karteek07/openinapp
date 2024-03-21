@@ -1,8 +1,0 @@
-1. Phone number length - Done
-2. due date with jwt token
-3. filters for all apis as per doc - Done
-4. Dates for all fields and apis - Done
-5. Date should be greater than or equal to today's date -Done
-5. To update subtask create api, so subtask can only be created after task is created - Done
-6. Priority cron job - Done
-7. Calling cron job 
