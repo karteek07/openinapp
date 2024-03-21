@@ -73,18 +73,21 @@ const dateDifference = (date) => {
     return differenceDays.toFixed(2);
 };
 
-const priorityOrder = (date) => {
-    d = dateDifference(date);
-    console.log('🚀 ~ file: helper.js:78 ~ priorityOrder ~ d:', d);
-
-    if (d <= 0 && d > 1) {
-        return 0;
-    } else if (d >= 1 && d <= 2) {
-        return 1;
-    } else if (d >= 3 && d <= 4) {
-        return 2;
-    } else if (d > 5) {
+const priorityOrder = (d) => {
+    if (d > 5) {
         return 3;
+    }
+
+    if (d > 2 && d < 5) {
+        return 2;
+    }
+
+    if (d > 0 && d < 3) {
+        return 1;
+    }
+
+    if (d <= 0) {
+        return 0;
     }
 };
 

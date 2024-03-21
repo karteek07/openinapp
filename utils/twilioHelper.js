@@ -1,7 +1,5 @@
 const { accountSid, authToken } = require('./config');
 
-const accountSid = accountSid;
-const authToken = authToken;
 const client = require('twilio')(accountSid, authToken);
 const phoneno = '+12402066365';
 
@@ -16,8 +14,13 @@ const makeCall = async (mobileno) => {
         return call;
     } catch (error) {
         if (error.code === 21219) {
-            console.error('Error: Phone number is not verified.');
-            // Handle the error gracefully, such as logging it or notifying the user
+            console.error(
+                `Error: Phone number: '+91${mobileno}' is not verified.`
+            );
+        } else if (error.code === 20003) {
+            console.error(
+                `Error: Unauthenticated.`
+            );
         } else {
             console.error('Error making call:', error);
         }

@@ -1,30 +1,34 @@
 const cron = require('node-cron');
 const Task = require('../models/Task');
-const { formatDate, priorityOrder } = require('../utils/helper');
+const {
+    formatDate,
+    priorityOrder,
+    dateDifference,
+} = require('../utils/helper');
 
-const runCron = async () => {
+const runPriorityCron = async () => {
     cron.schedule('* * * * *', async () => {
-        // const currentDate = new Date().toISOString();
-        // console.log(`Cron job is running at ${currentDate}`);
+        tasks = await Task.find({}, { due_date: 1, _id: 0 });
+        dates = tasks.map((user) => user.due_date);
+        datesDiff = dates.map((date) => parseFloat(dateDifference(date)));
+        prios = datesDiff.map((d) => parseInt(priorityOrder(d)));
+
+        const tasksToUpdate = await Task.find({ due_date: { $in: dates } });
+
+        if (tasksToUpdate.length === prios.length) {
+            for (let i = 0; i < tasksToUpdate.length; i++) {
+                await Task.updateOne(
+                    { _id: tasksToUpdate[i]._id }, // Match by task ID
+                    { $set: { priority: prios[i] } } // Update priority
+                );
+            }
+            console.log('Updated: priorities');
+        } else {
+            console.error(
+                'Number of tasks to update does not match number of priority values.'
+            );
+        }
     });
 };
 
-console.log(formatDate(new Date()));
-
-const tt = async () => {
-    tasks = await Task.find({},{due_date: 1, _id:0})
-    dates = tasks.map(user=> user.due_date)
-    pris = dates.map((date)=>{
-        return priorityOrder(date)
-    })
-    console.log("🚀 ~ file: priorityCronJob.js:16 ~ tt ~ tasks:", tasks);
-    console.log("🚀 ~ file: priorityCronJob.js:17 ~ tt ~ dates:", dates);
-    console.log("🚀 ~ file: priorityCronJob.js:18 ~ pris=dates.map ~ pris:", pris);
-   
-    
-   
-};
-
-tt();
-
-module.exports = runCron;
+module.exports = runPriorityCron;

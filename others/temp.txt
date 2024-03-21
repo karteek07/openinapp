@@ -1,0 +1,5 @@
+Cron logic for changing priority of task based on due_date of task
+0 - Due date is today //0
+1 - Due date is between tomorrow and day after tomorrow // 1-2
+2 - 3-4
+3 - 5+
