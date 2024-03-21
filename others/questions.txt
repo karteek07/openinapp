@@ -1,0 +1,15 @@
+Hi Subham
+
+Kartik here
+
+I have encountered a few questions in the assignment
+1. There is no mention of any database, so I am going with Mongodb, is it fine?
+2. There are models defined for both user and subtask but there is no defined model for Task model in the document, so do I have to define it in my own way?
+And also there is no mention of login and registration of the new user, may you please let me know, do I have to first create user
+if yes, then where do I have to use jwt for Task - {title, description, duedate} or for user session
+
+
+
+
+
+1. I am using trigger on pre save and pre update but still on soft delete where I am updating, the trigger is not working
