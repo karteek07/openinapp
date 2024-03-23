@@ -7,20 +7,24 @@ const Task = require('../models/Task');
 const SubTask = require('../models/SubTask');
 const auth = require('../middleware/auth');
 const { tokenBlackList, secret } = require('../utils/config');
+const { msg } = require('../utils/helper');
 
-router.get('/user/create/:phoneno/:priority', async (req, res) => {
-    let { phoneno, priority } = req.params;
-    if (phoneno.length != 10) {
+router.post('/user/create/', async (req, res) => {
+    let { phoneno, priority } = req.body;
+    if (phoneno.toString().length != 10) {
         return res.json({
             message: `Error, please enter only 10-digit phone number`,
         });
     }
-    const existingUser = await User.findOne({ phone_number: phoneno });
+    const existingUser = await User.findOne({
+        phone_number: parseInt(phoneno),
+    });
 
     if (existingUser) {
-        return res.json({
-            error: 'Duplicate number, use another phone number',
-        });
+        // return res.json({
+        //     error: 'Duplicate number, use another phone number',
+        // });
+        msg(res, 'Failure', 'Duplicate number, use another phone number');
     }
 
     const user = await new User({
@@ -30,7 +34,7 @@ router.get('/user/create/:phoneno/:priority', async (req, res) => {
 
     await user.save();
 
-    return res.json(user);
+    return res.json({ success: 'User is created', user: user });
 });
 
 router.get('/', async (req, res) => {

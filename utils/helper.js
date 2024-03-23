@@ -1,3 +1,10 @@
+const msg = (res, st, msg) => {
+    return res.json({
+        status: st,
+        message: msg,
+    });
+};
+
 const dateParser = (date) => {
     const day = date.slice(0, 2);
     const month = date.slice(2, 4);
@@ -92,6 +99,7 @@ const priorityOrder = (d) => {
 };
 
 module.exports = {
+    msg,
     dateParser,
     dateCompare,
     dateDifference,
